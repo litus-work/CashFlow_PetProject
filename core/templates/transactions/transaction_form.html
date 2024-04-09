@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{% if object %}Edit Transaction{% else %}Add Transaction{% endif %}</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="id_amount">Amount:</label>
+      {{ form.amount }}
+    </div>
+    <div class="form-group">
+      <label for="id_date">Date:</label>
+      {{ form.date }}
+    </div>
+    <div class="form-group">
+      <label for="id_description">Description:</label>
+      {{ form.description }}
+    </div>
+    <div class="form-group">
+      <label for="id_category">Category:</label>
+      {{ form.custom_category }}
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+{% endblock %}
