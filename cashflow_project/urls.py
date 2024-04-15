@@ -4,8 +4,9 @@ from django.contrib.auth import views as auth_views
 from django.contrib import admin
 
 from core.api import TransactionListAPIView
-from core.views import  signup, profile_view, CustomPasswordResetView, logout_view, TransactionListView, \
-    TransactionCreateView, TransactionUpdateView, TransactionDeleteView
+from core.views import signup, profile_view, CustomPasswordResetView, logout_view, TransactionListView, \
+    TransactionCreateView, TransactionUpdateView, TransactionDeleteView, upload_csv, delete_all_categories, \
+    delete_all_transactions
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -30,6 +31,11 @@ urlpatterns = [
     path('api/transactions/create/', TransactionCreateView.as_view(), name='transaction_create'),
     path('api/transactions/update/<int:pk>/', TransactionUpdateView.as_view(), name='transaction_update'),
     path('api/transactions/delete/<int:pk>/', TransactionDeleteView.as_view(), name='transaction_delete'),
+    path('transactions/upload-csv/', upload_csv, name='upload_csv'),
+    path('transactions/delete_all_transactions-csv/', delete_all_transactions, name='delete_all_transactions'),
+    path('transactions/delete_all_categories-csv/', delete_all_categories, name='delete_all_categories'),
+
+
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

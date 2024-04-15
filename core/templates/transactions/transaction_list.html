@@ -1,8 +1,13 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Transaction List
+{% endblock %}
 
 {% block content %}
-  <h2 style="color: green;"> Transaction List</h2>
-  <a href="{% url 'transaction_add' %}" class="highlight-link">Add new transaction</a>
+    <h1>Transaction List</h1>
+    <!-- Отображение списка транзакций -->
       <table>
         <thead>
           <tr>
@@ -40,4 +45,13 @@
         </tbody>
 
       </table>
+    <script>
+            function confirmDeleteAllTransactions() {
+                return confirm("Are you sure you want to delete all transactions?");
+            }
+
+            function confirmDeleteAllCategories() {
+                return confirm("Are you sure you want to delete all categories?");
+            }
+    </script>
 {% endblock %}
