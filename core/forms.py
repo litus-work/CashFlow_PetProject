@@ -7,7 +7,7 @@ class TransactionForm(forms.ModelForm):
 
     class Meta:
         model = Transaction
-        fields = ['amount', 'date', 'description', 'category']  # Укажите здесь поля, которые должны быть в форме
+        fields = ['amount', 'date', 'description', 'category']
         widgets = {
             'date': forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date'}),
         }
@@ -38,3 +38,7 @@ class TransactionForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+
+class CSVUploadForm(forms.Form):
+    csv_file = forms.FileField(label='Select a CSV file')

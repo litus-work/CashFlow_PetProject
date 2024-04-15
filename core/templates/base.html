@@ -17,34 +17,69 @@
     <header>
         <!-- Навигационная панель или логотип -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <img src="{% static 'main/img/6475986.png' %}" alt="Logo" style="width: 2%; height: auto;">
             <a class="navbar-brand" href="#">Cash-Flow</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <img src="{% static 'main/img/6475986.png' %}" alt="Logo" style="width: 30%; height: auto;">
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'transaction_list' %}">Transactions <span class="sr-only">(current)</span></a>
-                    </li>
-                    <!-- Дополнительные ссылки -->
-                </ul>
+                <ul class="navbar-nav mr-auto">
+                    <a class="nav-link" href="{% url 'transaction_list' %}"> <button class="btn btn-outline-success" type="button">Transaction</button></a>
+                    <a class="nav-link" href="{% url 'transaction_add' %}"> <button class="btn btn-outline-success" type="button">Add transaction</button></a>
+                    <a class="nav-link" href="{% url 'upload_csv' %}"> <button class="btn btn-outline-success" type="button">Upload CSV File</button></a>
+            <!-- Ваши ссылки на страницы здесь -->
+        </ul>
+        <ul class="navbar-nav">
+            <!-- Форма для удаления всех транзакций -->
+            <li class="nav-item">
+                <form action="{% url 'delete_all_transactions' %}" method="post" onsubmit="return confirmDeleteAllTransactions()">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger">Delete All Transactions</button>
+                </form>
+            </li>
+            <!-- Форма для удаления всех категорий -->
+            <li class="nav-item">
+                <form action="{% url 'delete_all_categories' %}" method="post" onsubmit="return confirmDeleteAllCategories()">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger">Delete All Categories</button>
+                </form>
+            </li>
+        </ul>
+
+
+
+
+
+<!--                <ul class="navbar-nav">-->
+
+<!--                        <a class="nav-link" href="{% url 'transaction_list' %}"> <button class="btn btn-outline-success" type="button">Transaction</button></a>-->
+<!--                        <a class="nav-link" href="{% url 'transaction_add' %}"> <button class="btn btn-outline-success" type="button">Add transaction</button></a>-->
+<!--                        <a class="nav-link" href="{% url 'upload_csv' %}"> <button class="btn btn-outline-success" type="button">Upload CSV File</button></a>-->
+<!--                    -->
+
+
+<!--                    &lt;!&ndash; Дополнительные ссылки &ndash;&gt;-->
+<!--                </ul>-->
 
             </div>
         </nav>
     </header>
-<!--    <aside>-->
+    <aside>
 
-<!--        <span class="logo">CashFlow</span>-->
+
+
 <!--        <h3>Navigation</h3>-->
 <!--        <ul>-->
 <!--            <a href=""><li><i class="fas fa-home"></i>Main</li></a>-->
 <!--            <a href=""><li><i class="fas fa-home"></i>About us</li></a>-->
 <!--            <a href=""><li><i class="fas fa-home"></i>Kontakt</li></a>-->
 <!--        </ul>-->
-<!--    </aside>-->
+    </aside>
     <main role="main" class="container">
         {% block content %}
+        <!-- Содержимое страницы -->
+        {% endblock %}
+        {% block content2 %}
         <!-- Содержимое страницы -->
         {% endblock %}
     </main>
@@ -59,7 +94,19 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function confirmDeleteAllTransactions() {
+            return confirm("Are you sure you want to delete all transactions?");
+        }
+
+        function confirmDeleteAllCategories() {
+            return confirm("Are you sure you want to delete all categories?");
+        }
+    </script>
     {% block extra_js %}
+
     {% endblock %}
+
 </body>
+
 </html>
