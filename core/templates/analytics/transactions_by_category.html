@@ -16,11 +16,7 @@
     </head>
     <body>
         <h1>Transactions by Category: {{ category_name }}</h1>
-        <ul>
-            {% for transaction in transactions %}
-                <li>{{ transaction.description }} - {{ transaction.amount }}</li>
-            {% endfor %}
-        </ul>
+        <img src="{% static 'reports/pie_report.png' %}" alt="Monthly Expenses by Category">
     </body>
 </html>
 {% endblock %}

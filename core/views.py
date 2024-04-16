@@ -5,9 +5,12 @@ from io import TextIOWrapper
 from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import PasswordResetView
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+
+from analytics.reports import get_transactions_by_category, generate_monthly_expense_pie_chart
 from core.forms import TransactionForm
 from core.models import Transaction, Category
 from .forms import CSVUploadForm
@@ -113,12 +116,14 @@ def upload_csv(request):
 
     return render(request, 'transactions/upload_csv.html', {'form': form})
 
+
 def delete_all_transactions(request):
     if request.method == 'POST':
         # Удаление всех транзакций
         Transaction.objects.all().delete()
         return redirect('transaction_list')  # Перенаправление на страницу списка транзакций
     return render(request, 'delete_all_transactions.html')
+
 
 def delete_all_categories(request):
     if request.method == 'POST':
@@ -128,5 +133,12 @@ def delete_all_categories(request):
     return render(request, 'delete_all_categories.html')
 
 
+def transactions_by_category_view(request, category_name):
+    transactions = get_transactions_by_category(category_name)
+    return render(request, 'analytics/transactions_by_category.html', {'transactions': transactions})
 
-#
+def display_monthly_expense_pie_chart(request):
+    generate_monthly_expense_pie_chart()
+    chart_path = 'static/reports/pie_report.png'
+    return render(request, 'analytics/transactions_by_category.html', {'chart_path': chart_path})
+

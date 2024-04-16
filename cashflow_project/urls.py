@@ -6,7 +6,7 @@ from django.contrib import admin
 from core.api import TransactionListAPIView
 from core.views import signup, profile_view, CustomPasswordResetView, logout_view, TransactionListView, \
     TransactionCreateView, TransactionUpdateView, TransactionDeleteView, upload_csv, delete_all_categories, \
-    delete_all_transactions
+    delete_all_transactions, transactions_by_category_view, display_monthly_expense_pie_chart
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -23,6 +23,7 @@ urlpatterns = [
     path('password_reset/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
     path('transactions/', TransactionListView.as_view(), name='transaction_list'),
     path('transactions/add/', TransactionCreateView.as_view(), name='transaction_add'),
     path('transactions/<int:pk>/edit/', TransactionUpdateView.as_view(), name='transaction_edit'),
@@ -34,6 +35,10 @@ urlpatterns = [
     path('transactions/upload-csv/', upload_csv, name='upload_csv'),
     path('transactions/delete_all_transactions-csv/', delete_all_transactions, name='delete_all_transactions'),
     path('transactions/delete_all_categories-csv/', delete_all_categories, name='delete_all_categories'),
+    # path('transactions/<str:category_name>/', transactions_by_category_view, name='transactions_by_category'),
+    path('transactions/pie_chart/', display_monthly_expense_pie_chart, name='transactions_by_category'),
+
+
 
 
 
