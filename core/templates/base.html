@@ -18,7 +18,7 @@
         <!-- Навигационная панель или логотип -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <img src="{% static 'main/img/6475986.png' %}" alt="Logo" style="width: 2%; height: auto;">
-            <a class="navbar-brand" href="#">Cash-Flow</a>
+            <a class="navbar-brand" href="{% url 'transaction_list' %}">Cash-Flow</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -27,6 +27,7 @@
                     <a class="nav-link" href="{% url 'transaction_list' %}"> <button class="btn btn-outline-success" type="button">Transaction</button></a>
                     <a class="nav-link" href="{% url 'transaction_add' %}"> <button class="btn btn-outline-success" type="button">Add transaction</button></a>
                     <a class="nav-link" href="{% url 'upload_csv' %}"> <button class="btn btn-outline-success" type="button">Upload CSV File</button></a>
+                    <a class="nav-link" href="{% url 'transactions_by_category' %}"> <button class="btn btn-outline-success" type="button">Analytics</button></a>
             <!-- Ваши ссылки на страницы здесь -->
         </ul>
         <ul class="navbar-nav">

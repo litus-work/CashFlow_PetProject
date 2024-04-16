@@ -1,0 +1,22 @@
+<!-- transactions_by_category.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    transactions_by_category
+{% endblock %}
+
+{% block content %}
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Transactions by Category</title>
+    </head>
+    <body>
+        <h1>Transactions by Category: {{ category_name }}</h1>
+        <img src="{% static 'reports/pie_report.png' %}" alt="Monthly Expenses by Category">
+    </body>
+</html>
+{% endblock %}
