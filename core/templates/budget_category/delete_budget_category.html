@@ -1,0 +1,17 @@
+<!-- budget/templates/budget_category/delete.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Budget Category</title>
+</head>
+<body>
+    <h1>Delete Budget Category</h1>
+    <p>Are you sure you want to delete the category "{{ category.name }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+</body>
+</html>

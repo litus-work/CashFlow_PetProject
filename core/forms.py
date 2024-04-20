@@ -1,5 +1,7 @@
 from django import forms
-from .models import Transaction, Category
+from django.contrib.auth.forms import UserCreationForm
+
+from .models import Transaction, Category, Budget, CustomUser, BudgetCategory
 
 
 class TransactionForm(forms.ModelForm):
@@ -42,3 +44,22 @@ class TransactionForm(forms.ModelForm):
 
 class CSVUploadForm(forms.Form):
     csv_file = forms.FileField(label='Select a CSV file')
+
+
+class BudgetForm(forms.ModelForm):
+    class Meta:
+        model = Budget
+        fields = ['house_rent', 'education', 'transportation', 'food', 'entertainment', 'savings', 'utilities', 'travel', 'communication','sport', 'household', 'healthcare', 'total_budget']
+
+
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = CustomUser
+        fields = ('username', 'password1', 'password2')
+
+
+class BudgetCategoryForm(forms.ModelForm):
+    class Meta:
+        model = BudgetCategory
+        fields = ['name']

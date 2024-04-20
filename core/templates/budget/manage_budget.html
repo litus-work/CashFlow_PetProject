@@ -1,0 +1,30 @@
+<!-- manage_budget.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Transaction List
+{% endblock %}
+
+{% block content %}
+
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Manage Budget</title>
+    <!--    <link rel="stylesheet" href="{% static 'css/budget.css' %}">-->
+    </head>
+        <body>
+            <h1>Manage Budget</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Save</button>
+            </form>
+            <a href="{% url 'create_budget_category' %}">Add Category</a>
+            <a href="{% url 'edit_budget_category' category_id=category.id %}">Edit Category</a>
+            <a href="{% url 'delete_budget_category' category_id=category.id %}">Delete Category</a>
+        </body>
+    </html>
+{% endblock %}

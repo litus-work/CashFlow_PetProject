@@ -3,6 +3,7 @@ import logging
 from io import TextIOWrapper
 
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import PasswordResetView
 from django.http import HttpResponse
@@ -11,21 +12,43 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
 from analytics.reports import get_transactions_by_category, generate_monthly_expense_pie_chart
-from core.forms import TransactionForm
-from core.models import Transaction, Category
+from core.forms import TransactionForm, BudgetForm, BudgetCategoryForm
+from core.models import Transaction, Category, Budget, BudgetCategory
 from .forms import CSVUploadForm
 
 logger = logging.getLogger(__name__)
 
+from django.shortcuts import render
+
+
+def home(request):
+    return render(request, 'home.html')
+
+
+# def signup(request):
+#     if request.method == 'POST':
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('login')  # Redirects to the login page after successful registration
+#     else:
+#         form = UserCreationForm()
+#     return render(request, 'registration/signup.html', {'form': form})
+
+
+# В вашем файле views.py
+
+from .forms import CustomUserCreationForm
+
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # Redirects to the login page after successful registration
+            return redirect('login')  # Перенаправление на страницу входа после успешной регистрации
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
 
@@ -137,8 +160,73 @@ def transactions_by_category_view(request, category_name):
     transactions = get_transactions_by_category(category_name)
     return render(request, 'analytics/transactions_by_category.html', {'transactions': transactions})
 
+
 def display_monthly_expense_pie_chart(request):
     generate_monthly_expense_pie_chart()
     chart_path = 'static/reports/pie_report.png'
     return render(request, 'analytics/transactions_by_category.html', {'chart_path': chart_path})
 
+
+@login_required
+def manage_budget(request):
+    user_budget, created = Budget.objects.get_or_create(user=request.user)
+    print(user_budget)
+
+    categories = BudgetCategory.objects.all()
+    first_category = categories.first()
+    context = {'form': BudgetForm(instance=user_budget), 'category': first_category}
+
+    if request.method == 'POST':
+        form = BudgetForm(request.POST, instance=user_budget)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = BudgetForm(instance=user_budget)
+
+    return render(request, 'budget/manage_budget.html', context)
+
+def create_budget_category(request):
+    if request.method == 'POST':
+        form = BudgetCategoryForm(request.POST)
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.user_id = request.user.id  # Устанавливаем ID текущего пользователя
+            category.save()
+            return redirect('budget_category_list')
+    else:
+        form = BudgetCategoryForm()
+    return render(request, 'budget_category/create_budget_category.html', {'form': form})
+
+
+@login_required
+def edit_budget_category(request, category_id):
+    category = BudgetCategory.objects.get(pk=category_id)
+    if request.method == 'POST':
+        form = BudgetCategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.user_id = request.user.id  # Устанавливаем ID текущего пользователя
+            category.save()
+            return redirect('budget_category_list')
+    else:
+        form = BudgetCategoryForm(instance=category)
+    return render(request, 'budget_category/edit_budget_category.html', {'form': form, 'category': category})
+
+
+@login_required
+def delete_budget_category(request, category_id):
+    category = BudgetCategory.objects.get(pk=category_id)
+    if request.method == 'POST':
+        category.delete()
+        return redirect('budget_category_list')
+    return render(request, 'budget_category/delete_budget_category.html', {'category': category})
+
+def budget_category_list(request):
+    categories = BudgetCategory.objects.all()
+    return render(request, 'budget_category/list.html', {'categories': categories})
+
+
+def budget_list(request):
+    budgets = Budget.objects.all()  # Получаем все объекты бюджета из базы данных
+    return render(request, 'budget/budget_list.html', {'budgets': budgets})

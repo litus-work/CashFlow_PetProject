@@ -138,6 +138,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'litus0791@gmail.com'
 EMAIL_HOST_PASSWORD = 'deyc zmpw qmqc ymmt'
+AUTH_USER_MODEL = 'core.CustomUser'
 
 LOGGING = {
     'version': 1,
